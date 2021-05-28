@@ -1,0 +1,39 @@
+template_path: cloudwatch-dashboard.j2
+sceptre_user_data:
+    AppName: 'cloudwatch-dashboard'
+    ServiceName: 
+      AWS/ApplicationELB:
+      - { name: 'app/confl-LoadB-X9TH78DRKURE7/376521624b42650c', title: 'confl-RequestCount', metrics: ['RequestCount'], region: 'eu-west-1', account: '12345678890'}
+      - { name: 'app/confl-LoadB-X9TH78DRKURE7/376521624b42650c', title: 'confl-NewConnectionCount', metrics: ['NewConnectionCount'], region: 'eu-west-1', account: '12345678890'}
+      - { name: 'app/confl-LoadB-X9TH78DRKURE7/376521624b42650c', title: 'confl-ActiveConnectionCount', metrics: ['ActiveConnectionCount'], region: 'eu-west-1', account: '12345678890'}
+      - { name: 'app/confl-LoadB-X9TH78DRKURE7/376521624b42650c', title: 'confl-Target 5xx/4xx', metrics: ['HTTPCode_Target_5XX_Count','HTTPCode_Target_4XX_Count'], region: 'eu-west-1', account: '12345678890'}
+      - { name: 'app/confl-LoadB-X9TH78DRKURE7/376521624b42650c', title: 'confl-LB 5xx/4xx', metrics: ['HTTPCode_ELB_5XX_Count','HTTPCode_ELB_4XX_Count'], region: 'eu-west-1', account: '12345678890'}
+      - { name: 'app/confl-LoadB-X9TH78DRKURE7/376521624b42650c', title: 'confl-Target 2xx/3xx', metrics: [HTTPCode_Target_2XX_Count','HTTPCode_Target_3XX_Count'], region: 'eu-west-1', account: '12345678890'}
+      - { name: 'app/confl-LoadB-X9TH78DRKURE7/376521624b42650c', title: 'confl-TargetResponseTime', metrics: ['TargetResponseTime'], region: 'eu-west-1', account: '12345678890'}
+      - { name: 'app/confl-LoadB-X9TH78DRKURE7/376521624b42650c', title: 'confl-ClientTLSNegotiationErrorCount', metrics: ['ClientTLSNegotiationErrorCount'], region: 'eu-west-1', account: '12345678890'}
+      - { name: 'app/confl-LoadB-X9TH78DRKURE7/376521624b42650c', title: 'confl-DroppedInvalidHeaderRequestCount', metrics: ['DroppedInvalidHeaderRequestCount'], region: 'eu-west-1', account: '12345678890'}
+      AWS/RDS:
+      - { name: 'prd-db1', title: 'prd-db1 CPU-Usage', metrics: ['CPUUtilization'], region: 'eu-west-1', account: '12345678890'}
+      - { name: 'prd-db1', title: 'prd-db1 Connections', metrics: ['DatabaseConnections'], region: 'eu-west-1', account: '12345678890' }
+      - { name: 'prd-db1', title: 'prd-db1 FreeableMemory', metrics: ['FreeableMemory'], region: 'eu-west-1', account: '12345678890'}
+      - { name: 'prd-db1', title: 'prd-db1 R/W Latency', metrics: ['ReadLatency','WriteLatency'], region: 'eu-west-1', account: '12345678890'}
+      - { name: 'prd-db1', title: 'prd-db1 R/W-IOPS', metrics: ['ReadIOPS','WriteIOPS'], region: 'eu-west-1', account: '12345678890'}
+      - { name: 'prd-db1', title: 'prd-db1 FreeStorageSpace', metrics: ['FreeStorageSpace'], region: 'eu-west-1', account: '12345678890'}
+      - { name: 'prd-db2', title: 'prd-db2 CPU-Usage', metrics: ['CPUUtilization'], region: 'eu-west-1', account: '12345678890'}
+      - { name: 'prd-db2', title: 'prd-db2 Connections', metrics: ['DatabaseConnections'], region: 'eu-west-1', account: '12345678890' }
+      - { name: 'prd-db2', title: 'prd-db2 FreeableMemory', metrics: ['FreeableMemory'], region: 'eu-west-1', account: '12345678890'}
+      - { name: 'prd-db2', title: 'prd-db2 R/W Latency', metrics: ['ReadLatency','WriteLatency'], region: 'eu-west-1', account: '12345678890'}     
+      - { name: 'prd-db2', title: 'prd-db2 R/W-IOPS', metrics: ['ReadIOPS','WriteIOPS'], region: 'eu-west-1', account: '12345678890'}
+      - { name: 'prd-db2', title: 'prd-db2 FreeStorageSpace', metrics: ['FreeStorageSpace'], region: 'eu-west-1', account: '12345678890'}
+      AWS/Lambda:
+      - { name: 'dispatcher', title: 'dispatcher Invocations', metrics: ['Invocations'], region: 'eu-west-1', account: '12345678890'} 
+      - { name: 'dispatcher', title: 'dispatcher Errors', metrics: ['Errors'], region: 'eu-west-1', account: '12345678890'}
+      - { name: 'dispatcher', title: 'dispatcher Duration', metrics: ['Duration'], region: 'eu-west-1', account: '12345678890'}
+      - { name: 'alarm-mailer-prod', title: 'alarm-mailer-prod Invocations', metrics: ['Invocations'], region: 'eu-west-1', account: '12345678890'} 
+      - { name: 'alarm-mailer-prod', title: 'alarm-mailer-prod Errors', metrics: ['Errors'], region: 'eu-west-1', account: '12345678890'}
+      - { name: 'alarm-mailer-prod', title: 'alarm-mailer-prod Duration', metrics: ['Duration'], region: 'eu-west-1', account: '12345678890'}
+      AWS/ApiGateway:
+      - { name: 'portal-rest-api', title: '5XXError', metrics: ['5XXError'], region: 'eu-west-1', account: '12345678890'} 
+      - { name: 'portal-rest-api', title: '4XXError', metrics: ['4XXError'], region: 'eu-west-1', account: '12345678890'} 
+      AWS/S3:
+      - { name: 'shared-artifacts', title: 'S3 BucketSizeBytes', metrics: ['BucketSizeBytes'], storagetype: 'StandardStorage',region: 'eu-west-1', account: '12345678890'}

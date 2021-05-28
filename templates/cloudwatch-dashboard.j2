@@ -1,0 +1,132 @@
+---
+AWSTemplateFormatVersion: 2010-09-09
+
+Resources:
+
+  MainDashboard:
+    Type: AWS::CloudWatch::Dashboard
+    Properties:
+      DashboardName: MainDashboard
+      DashboardBody: |-
+            {
+                "widgets": [
+            {% set y = [] %}
+            {% for service,widget in sceptre_user_data.ServiceName.items() -%}
+                 {% if service == "AWS/RDS" -%} 
+                     {{ ", " if not loop.first else "" }} 
+                     {% for item in widget %}                      
+                        {
+                        "type": "metric",
+                        "x": {{ loop.cycle(0,8,16) }},
+                        "y": {{ y | length // 3 * 6 }},
+                        "width": 8,
+                        "height": 6,
+                        "properties": {
+                            "view": "timeSeries",
+                            "stacked": false,
+                            "stat": "Sum",
+                            "metrics": [
+                                {% for metric in item.metrics -%}
+                                ["{{ service }}", "{{ metric }}", "DBInstanceIdentifier", "{{ item.name }}", {"accountId": "{{ item.account }}"}]{{ ", " if not loop.last else "" }}
+                                {% endfor -%}
+                            ],
+                            "region": "{{ item.region }}",
+                            "title":"{{ item.title }}"
+                        }}{{ ", " if not loop.last else "" }} {{ y.append(1) if y.append(1) }}
+                     {%- endfor -%} 
+                 {%- endif -%}
+                 {%- if service == "AWS/ApiGateway" -%}                               
+                     {{ ", " if not loop.first else "" }}
+                     {%- for item in widget %} 
+                        {
+                        "type": "metric",
+                        "x": {{ loop.cycle(0,8,16) }},
+                        "y": {{ y | length // 3 * 6 }},
+                        "width": 8,
+                        "height": 6,
+                        "properties": {
+                            "view": "timeSeries",
+                            "stacked": false,
+                            "stat": "Sum",
+                            "metrics": [
+                                {% for metric in item.metrics -%}
+                                ["{{ service }}", "{{ metric }}", "ApiName", "{{ item.name }}", {"accountId": "{{ item.account }}"}]{{ ", " if not loop.last else "" }}
+                                {% endfor -%}
+                            ],
+                            "region": "{{ item.region }}",
+                            "title":"{{ item.title }}"
+                        }}{{ ", " if not loop.last else "" }} {{ y.append(1) if y.append(1) }}
+                     {%- endfor -%}
+                 {%- endif -%}
+                 {%- if service == "AWS/Lambda" -%}
+                     {{ ", " if not loop.first else "" }}
+                     {%- for item in widget %}
+                        {
+                        "type": "metric",
+                        "x": {{ loop.cycle(0,8,16) }},
+                        "y": {{ y | length // 3 * 6}},
+                        "width": 8,
+                        "height": 6,
+                        "properties": {
+                            "view": "timeSeries",
+                            "stacked": false,
+                            "stat": "Sum",
+                            "metrics": [
+                                {% for metric in item.metrics -%}
+                                ["{{ service }}", "{{ metric }}", "FunctionName", "{{ item.name }}", {"accountId": "{{ item.account }}"}]{{ ", " if not loop.last else "" }}
+                                {% endfor -%}
+                            ],
+                            "region": "{{ item.region }}",
+                            "title":"{{ item.title }}"
+                        }}{{ ", " if not loop.last else "" }} {{ y.append(1) if y.append(1) }}
+                     {%- endfor -%}
+                 {%- endif -%}
+                 {%- if service == "AWS/S3" -%}
+                     {{ ", " if not loop.first else "" }}
+                     {%- for item in widget %}
+                        {
+                        "type": "metric",
+                        "x": {{ loop.cycle(0,8,16) }},
+                        "y": {{ y | length // 3 * 6 }},
+                        "width": 8,
+                        "height": 6,
+                        "properties": {
+                            "view": "timeSeries",
+                            "stacked": false,
+                            "stat": "Sum",
+                            "metrics": [
+                                {% for metric in item.metrics -%}
+                                ["{{ service }}", "{{ metric }}", "StorageType", "{{ item.storagetype }}", "BucketName", "{{ item.name }}", {"period": 86400, "accountId": "{{ item.account }}"}]{{ ", " if not loop.last else "" }}
+                                {% endfor -%}
+                            ],
+                            "region": "{{ item.region }}",
+                            "title":"{{ item.title }}"
+                        }}{{ ", " if not loop.last else "" }} {{ y.append(1) if y.append(1) }}
+                     {%- endfor -%}
+                 {%- endif -%}
+                 {%- if service == "AWS/ApplicationELB" -%}
+                     {{ ", " if not loop.first else "" }}
+                     {%- for item in widget %}
+                        {
+                        "type": "metric",
+                        "x": {{ loop.cycle(0,8,16) }},
+                        "y": {{ y | length // 3 * 6 }},
+                        "width": 8,
+                        "height": 6,
+                        "properties": {
+                            "view": "timeSeries",
+                            "stacked": false,
+                            "stat": "Sum",
+                            "metrics": [
+                                {% for metric in item.metrics -%}
+                                ["{{ service }}", "{{ metric }}", "LoadBalancer",  "{{ item.name }}", {"accountId": "{{ item.account }}"}]{{ ", " if not loop.last else "" }}
+                                {% endfor -%}
+                            ],
+                            "region": "{{ item.region }}",
+                            "title":"{{ item.title }}"
+                        }}{{ ", " if not loop.last else "" }} {{ y.append(1) if y.append(1) }}
+                     {%- endfor -%}
+                 {%- endif -%}
+            {% endfor %}
+                ]
+            }
